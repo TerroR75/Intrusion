@@ -8,7 +8,7 @@ const router = express.Router();
 
 // User registration
 router.post(
-  "/",
+  "/register",
   [
     body("username").notEmpty().withMessage("Username is required"),
     body("username").isLength({ min: 3 }).withMessage("Username must be at least 3 characters long"),
@@ -50,5 +50,23 @@ router.post(
     }
   }
 );
+// User signing in
+router.post("/login", async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.body.username });
+    if (!user) {
+      return res.status(401).json({ message: "User does not exist" });
+    } else {
+      const isMatch = await bcrypt.compare(req.body.password, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Incorrect password" });
+      }
 
+      return res.status(200).json({ message: "Login successful" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: error.message });
+  }
+});
 export default router;
