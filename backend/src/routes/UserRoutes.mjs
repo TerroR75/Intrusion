@@ -6,30 +6,35 @@ import bcrypt from "bcrypt";
 
 const router = express.Router();
 
-// User registration
+/*User registration (router is redirecting from index.mjs from the path /users to /users/register, and then receives
+request body (json formatted data from the user - like from register form), and converts it to User model defined by
+../src/models/UserModel.mjs 
+*/
 router.post(
   "/register",
   [
-    body("username").notEmpty().withMessage("Username is required"),
+    body("username").notEmpty().withMessage("Username is required"), // Everything here with object "body" applies some rules for users to follow when registering a new account
     body("username").isLength({ min: 3 }).withMessage("Username must be at least 3 characters long"),
     body("email").isEmail().withMessage("Invalid email address"),
     body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters long"),
   ],
   async (req, res) => {
+    // "async" function basically means it performs some tasks that need some time to complete, like in this case - database data fetching, it is always acompanied by "await" keyword like down below
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     try {
       // Check if email already exists
-      const existingUser = await User.findOne({ email: req.body.email });
+      const existingUser = await User.findOne({ email: req.body.email }); // "await" keyword so the fucntion "waits" here for this line to complete, otherwise it would just go to the next lines and execute them
       if (existingUser) {
         return res.status(400).json({ message: "User with this email already exists" });
       }
 
-      // Hash the password
+      // Hash the password (NEVER EVER store user passwords in raw format received from the user, it would be great to also hash emails though but keep it simple for now)
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
+      // Creating a new user object using request body (json format), and then using again "await" keyword to create a new entry in database
       const newUser = {
         username: req.body.username,
         email: req.body.email,
@@ -39,6 +44,7 @@ router.post(
       const user = await User.create(newUser);
       return res.status(201).send(user);
     } catch (error) {
+      // If something goes wrong during whole "try" block -> throw an error
       if (error.code === 11000) {
         // Duplicate key error
         const field = Object.keys(error.keyPattern)[0];
