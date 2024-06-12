@@ -1,6 +1,5 @@
 import express from "express";
 import mongoose from "mongoose";
-import { PORT, mongoDBURL } from "./config.mjs";
 import userRoutes from "./src/routes/UserRoutes.mjs";
 import { connectDB } from "./database.mjs";
 
