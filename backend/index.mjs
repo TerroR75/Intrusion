@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import userRoutes from "./src/routes/UserRoutes.mjs";
 import { connectDB } from "./database.mjs";
 
-export const app = express();
+const app = express();
 
 // MIDDLEWARE ("Methods/Functions/Middleman" in between calls, which does something to the original request and passes it to the next callback)
 app.use(express.json()); // Middleware for json (parses request to json format)
@@ -21,3 +21,5 @@ app.get("/", (req, res) => {
 app.use("/users", userRoutes); // /users router which is managed by ./src/routes/UserRoutes.mjs where all USER related functions are
 
 connectDB();
+
+export { app };

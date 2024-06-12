@@ -4,7 +4,7 @@
   "main": "index.mjs",
   "scripts": {
     "dev": "cross-env NODE_ENV=dev nodemon index.mjs",
-    "tests": "cross-env NODE_ENV=test mocha --timeout 10000"
+    "tests": "cross-env NODE_ENV=test mocha --exit"
   },
   "keywords": [],
   "author": "",
