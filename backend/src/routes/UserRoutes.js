@@ -1,7 +1,7 @@
 import express from "express";
 import { body, validationResult } from "express-validator";
-import { User } from "../models/UserModel.mjs";
-import { generateRandomIpAddress } from "../utils/RandomGenerators.mjs";
+import { User } from "../models/UserModel.js";
+import { generateRandomIpAddress } from "../utils/RandomGenerators.js";
 import bcrypt from "bcrypt";
 
 const router = express.Router();
@@ -73,6 +73,19 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: error.message });
+  }
+});
+
+router.get("/hack", async (req, res) => {
+  const destinationUser = await User.findOne({ ipAddress: req.body.destinationIp });
+  if (!destinationUser) {
+    return res.status(401).json({ message: "IP not found." });
+  }
+  const sourceUser = await User.findById(req.body.source);
+  if (!sourceUser) {
+    return res.status(401).json({ message: "There was an error." });
+  } else {
+    console.log(`User: ${sourceUser.ipAddress} hacks: ${req.body.destinationIp}`);
   }
 });
 export default router;

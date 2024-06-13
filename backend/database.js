@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { app } from "./index.mjs";
+import { app } from "./index.js";
 import dotenv from "dotenv";
 
 const envFile = process.env.NODE_ENV === "test" ? ".env.test" : ".env.dev";

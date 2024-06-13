@@ -1,9 +1,10 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.mjs",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev nodemon index.mjs",
+    "dev": "cross-env NODE_ENV=dev nodemon index.js",
     "tests": "cross-env NODE_ENV=test mocha --exit"
   },
   "keywords": [],

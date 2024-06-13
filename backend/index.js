@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
-import userRoutes from "./src/routes/UserRoutes.mjs";
-import { connectDB } from "./database.mjs";
+import userRoutes from "./src/routes/UserRoutes.js";
+import { connectDB } from "./database.js";
 
 const app = express();
 
