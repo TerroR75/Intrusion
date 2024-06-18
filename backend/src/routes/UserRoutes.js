@@ -4,8 +4,17 @@ import { User } from "../models/UserModel.js";
 import { generateRandomIpAddress } from "../utils/RandomGenerators.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import rateLimit from "express-rate-limit";
 
 const router = express.Router();
+
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 5,
+  message: {
+    message: "Too many requests from this IP, please try again after a minute",
+  },
+});
 
 /*User registration (router is redirecting from index.mjs from the path /users to /users/register, and then receives
 request body (json formatted data from the user - like from register form), and converts it to User model defined by
@@ -13,6 +22,7 @@ request body (json formatted data from the user - like from register form), and 
 */
 router.post(
   "/register",
+  limiter,
   [
     body("username").notEmpty().withMessage("Username is required"), // Everything here with object "body" applies some rules for users to follow when registering a new account
     body("username").isLength({ min: 3 }).withMessage("Username must be at least 3 characters long"),
@@ -43,7 +53,7 @@ router.post(
         ipAddress: generateRandomIpAddress(),
       };
       const user = await User.create(newUser);
-      return res.status(201).send(user);
+      return res.status(201).send(user).json({ message: "Account successfully created!" });
     } catch (error) {
       // If something goes wrong during whole "try" block -> throw an error
       if (error.code === 11000) {
@@ -53,13 +63,13 @@ router.post(
         return res.status(400).send({ message });
       }
       console.log(error.message);
-      res.status(500).send({ message: error.message });
+      //res.status(500).send({ message: error.message });
     }
   }
 );
 
 // User signing in
-router.post("/login", async (req, res) => {
+router.post("/login", limiter, async (req, res) => {
   console.log(req.body);
   try {
     const user = await User.findOne({ username: req.body.username });

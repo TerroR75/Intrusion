@@ -24,6 +24,15 @@ export const login = async (username, password) => {
     console.log(token);
     return token;
   } catch (error) {
-    console.log(error.response.data.message);
+    return error.response.data.message;
+  }
+};
+
+export const signup = async (username, email, password) => {
+  try {
+    const response = await agent.post("/users/register", { username, email, password });
+    return response;
+  } catch (error) {
+    return error;
   }
 };

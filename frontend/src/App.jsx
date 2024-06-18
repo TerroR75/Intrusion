@@ -1,3 +1,4 @@
+import { ToastContainer } from "react-toastify";
 import "./App.css";
 import AuthProvider from "./components/auth/AuthProvider";
 import Routes from "./components/routes/Routes";
@@ -11,6 +12,7 @@ function App() {
       <AuthProvider>
         <Routes />
       </AuthProvider>
+      <ToastContainer />
     </ThemeProvider>
   );
 }
