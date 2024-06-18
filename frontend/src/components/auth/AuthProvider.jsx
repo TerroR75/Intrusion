@@ -1,39 +1,54 @@
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { verifyToken } from "../../service/agent";
+import { CircularProgress } from "@mui/material";
 
 const AuthContext = createContext();
 
 // eslint-disable-next-line react/prop-types
 const AuthProvider = ({ children }) => {
-  // State to hold the authentication token
   const [token, setToken_] = useState(localStorage.getItem("token"));
+  const [isTokenValid, setIsTokenValid] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Function to set the authentication token
   const setToken = (newToken) => {
     setToken_(newToken);
   };
 
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-      localStorage.setItem("token", token);
-    } else {
-      delete axios.defaults.headers.common["Authorization"];
-      localStorage.removeItem("token");
-    }
+    const validateAndSetToken = async () => {
+      setLoading(true);
+      if (token) {
+        axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+        localStorage.setItem("token", token);
+        const data = await verifyToken();
+        if (data) {
+          setIsTokenValid(true);
+        } else {
+          setIsTokenValid(false);
+          setToken_(null);
+        }
+      } else {
+        delete axios.defaults.headers.common["Authorization"];
+        localStorage.removeItem("token");
+        setIsTokenValid(false);
+      }
+      setLoading(false);
+    };
+
+    validateAndSetToken();
   }, [token]);
 
-  // Memoized value of the authentication context
   const contextValue = useMemo(
     () => ({
       token,
+      isTokenValid,
       setToken,
     }),
-    [token]
+    [token, isTokenValid]
   );
 
-  // Provide the authentication context to the children components
-  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={contextValue}>{!loading && children}</AuthContext.Provider>;
 };
 
 // eslint-disable-next-line react-refresh/only-export-components

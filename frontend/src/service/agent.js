@@ -21,7 +21,7 @@ export const login = async (username, password) => {
     });
     return response.data;
   } catch (error) {
-    console.log(error); 
+    console.log(error);
   }
 };
 
@@ -31,5 +31,16 @@ export const signup = async (username, email, password) => {
     return response;
   } catch (error) {
     return error;
+  }
+};
+
+export const verifyToken = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await agent.post("/users/validate-token", { token });
+    return response.data;
+  } catch (error) {
+    console.error("Token validation failed:", error);
+    return null;
   }
 };
