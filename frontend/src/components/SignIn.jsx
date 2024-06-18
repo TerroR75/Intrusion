@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { login } from "../service/agent";
 import { useAuth } from "../components/auth/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Copyright(props) {
   return (
@@ -35,11 +36,17 @@ export default function SignIn() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    const res = await login(data.get("username"), data.get("password"));
-    if(res.status == 401) return;
-    setToken(res.token);
-    navigate("/", { replace: true });
+    try {
+      const res = await login(data.get("username"), data.get("password"));
+      if (res.status == 401) {
+        toast.error(res.data.message);
+      } else {
+        setToken(res.token);
+        navigate("/", { replace: true });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -57,7 +64,7 @@ export default function SignIn() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign in (test:test)
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
