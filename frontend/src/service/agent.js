@@ -19,12 +19,9 @@ export const login = async (username, password) => {
       username,
       password,
     });
-
-    const { token } = response.data;
-    console.log(token);
-    return token;
+    return response.data;
   } catch (error) {
-    return error.response.data.message;
+    console.log(error); 
   }
 };
 

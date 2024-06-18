@@ -36,8 +36,9 @@ export default function SignIn() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    const token = await login(data.get("username"), data.get("password"));
-    setToken(token);
+    const res = await login(data.get("username"), data.get("password"));
+    if(res.status == 401) return;
+    setToken(res.token);
     navigate("/", { replace: true });
   };
 
