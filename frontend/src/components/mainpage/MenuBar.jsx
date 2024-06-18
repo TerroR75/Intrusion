@@ -1,12 +1,12 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
-import Stack from '@mui/material/Stack';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Grow from "@mui/material/Grow";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
+import Stack from "@mui/material/Stack";
 
 export default function MenuListComposition() {
   const [open, setOpen] = React.useState(false);
@@ -25,10 +25,10 @@ export default function MenuListComposition() {
   };
 
   function handleListKeyDown(event) {
-    if (event.key === 'Tab') {
+    if (event.key === "Tab") {
       event.preventDefault();
       setOpen(false);
-    } else if (event.key === 'Escape') {
+    } else if (event.key === "Escape") {
       setOpen(false);
     }
   }
@@ -50,22 +50,22 @@ export default function MenuListComposition() {
           <MenuItem>Profile</MenuItem>
           <MenuItem>My account</MenuItem>
           <MenuItem>Logout</MenuItem>
-            <MenuItem>Home</MenuItem>
-            <MenuItem>Task Manager</MenuItem>
-            <MenuItem>Software</MenuItem>
-            <MenuItem>Hardware</MenuItem>
-            <MenuItem>Internet</MenuItem>
-            <MenuItem>Log File</MenuItem>
-            <MenuItem>University</MenuItem>
-            <MenuItem>Finances</MenuItem>
-            <MenuItem>Hacked Database</MenuItem>
-            <MenuItem>Missions</MenuItem>
-            <MenuItem>Clan</MenuItem>
-            <MenuItem>Ranking</MenuItem>
-            <MenuItem>Infamy</MenuItem>
+          <MenuItem>Home</MenuItem>
+          <MenuItem>Task Manager</MenuItem>
+          <MenuItem>Software</MenuItem>
+          <MenuItem>Hardware</MenuItem>
+          <MenuItem>Internet</MenuItem>
+          <MenuItem>Log File</MenuItem>
+          <MenuItem>University</MenuItem>
+          <MenuItem>Finances</MenuItem>
+          <MenuItem>Hacked Database</MenuItem>
+          <MenuItem>Missions</MenuItem>
+          <MenuItem>Clan</MenuItem>
+          <MenuItem>Ranking</MenuItem>
+          <MenuItem>Infamy</MenuItem>
         </MenuList>
       </Paper>
-{/*
+      {/*
       <div>
         <Button
           ref={anchorRef}
