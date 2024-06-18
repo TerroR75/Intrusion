@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+//import { Hardware } from "./HardwareModel";
 
 // Schema is just a way of defining a template for database to follow
 // "timestamps" - creates "createdAt" and "updatedAt" for some statistical purposes or something
@@ -8,6 +9,7 @@ const UserSchema = new mongoose.Schema(
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     ipAddress: { type: String, unique: true },
+    money: { type: Number },
   },
   { timestamps: true }
 );

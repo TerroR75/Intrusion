@@ -3,6 +3,7 @@ import { body, validationResult } from "express-validator";
 import { User } from "../models/UserModel.js";
 import { generateRandomIpAddress } from "../utils/RandomGenerators.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -56,8 +57,10 @@ router.post(
     }
   }
 );
+
 // User signing in
 router.post("/login", async (req, res) => {
+  console.log(req.body);
   try {
     const user = await User.findOne({ username: req.body.username });
     if (!user) {
@@ -67,8 +70,8 @@ router.post("/login", async (req, res) => {
       if (!isMatch) {
         return res.status(401).json({ message: "Incorrect password" });
       }
-
-      return res.status(200).json({ message: "Login successful" });
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "24h" });
+      return res.status(200).json({ message: "Login successful", token });
     }
   } catch (error) {
     console.log(error.message);
