@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { User } from "../models/UserModel.js";
-import { generateRandomIpAddress } from "./RandomGenerators.js";
+import { generateRandomIpAddress } from "./randomGenerators.js";
 
 export const createDevAccount = async () => {
   try {
